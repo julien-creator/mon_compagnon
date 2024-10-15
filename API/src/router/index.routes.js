@@ -1,5 +1,6 @@
 import { Router } from "express";
 import contact_routes from "./contact.routes.js";
+import user_routes from "./user.routes.js"
 
 const router = Router();
 
@@ -9,6 +10,7 @@ router.get("/", (req, res) => {
 });
 
 router.use("/contact", contact_routes);
+router.use("/user", user_routes)
 
 // Route pour gérer les erreurs 404
 router.get("*", (req, res) => {
