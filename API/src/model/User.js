@@ -16,21 +16,7 @@ class User {
         return await pool.execute(DELETE_USER, [id]);
     }
 
-    static async update(data) {
-        const UPDATE_USER = `
-            UPDATE user 
-            SET firstname = ?, lastname = ?, email = ?, phone = ?, password = ? 
-            WHERE id = ?
-        `;
-        return await pool.execute(UPDATE_USER, [
-            data.firstname,
-            data.lastname,
-            data.email,
-            data.phone,
-            data.password,
-            data.id,
-        ]);
-    }
+
 }
 
 export default User;
