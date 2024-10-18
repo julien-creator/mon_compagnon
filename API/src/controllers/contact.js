@@ -1,4 +1,4 @@
-import Contact from "../model/Contact.js";
+import Contact from "../models/Contact.js";
 
 const submitContactForm = async (req, res) => {
     const { firstname, lastname, email, message } = req.body;

@@ -19,4 +19,9 @@ class User {
 
 }
 
+/* 
+Faut-il ajouter les demande d'adoption en cours en LEFT JOIN
+dans les 2 méthodes "find" ?  
+*/
+
 export default User;

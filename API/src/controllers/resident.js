@@ -1,4 +1,4 @@
-import Resident from "../model/Resident.js";
+import Resident from "../models/Resident.js";
 
 // Récupérer tous les résidents (triés par date d'arrivée)
 const getResidents = async (req, res) => {
@@ -30,4 +30,41 @@ const getResidentById = async (req, res) => {
     }
 };
 
-export { getResidents, getResidentById };
+const create = async (req, res) => {
+    try {
+        const residentData = req.body;  // Assure-toi que le body contient toutes les colonnes nécessaires
+        const [response] = await Resident.create(residentData);
+        res.json({ msg: "Resident created", id: response.insertId });
+    } catch (err) {
+        res.status(500).json({ msg: err.message });
+    }
+};
+
+const update = async (req, res) => {
+    try {
+        const residentData = req.body;  // Assure-toi que le body contient toutes les colonnes nécessaires
+        const [response] = await Resident.update(residentData, req.params.id);
+        if (!response.affectedRows) {
+            res.status(404).json({ msg: "Resident not updated" });
+            return;
+        }
+        res.json({ msg: "Resident updated" });
+    } catch (err) {
+        res.status(500).json({ msg: err.message });
+    }
+};
+
+const remove = async (req, res) => {
+    try {
+        const [response] = await Resident.remove(req.params.id);
+        if (!response.affectedRows) {
+            res.status(404).json({ msg: "Resident not deleted" });
+            return;
+        }
+        res.json({ msg: "Resident deleted" });
+    } catch (err) {
+        res.status(500).json({ msg: err.message });
+    }
+};
+
+export { getResidents, getResidentById, create, update, remove };
