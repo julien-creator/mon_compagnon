@@ -13,14 +13,53 @@ const getAdoptions = async (req, res) => {
     }
 };
 
-const createAdoption = async (req, res) => {
+export const getAdoptionById = async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const adoptionData = req.body; // Assure-toi que les données viennent du corps de la requête
-        const result = await Adoption.create(adoptionData);
-        res.status(201).json({ message: 'Adoption créée avec succès', adoptionId: result[0].insertId });
+        const adoption = await Adoption.findById(id);
+        if (adoption) {
+            return res.status(200).json(adoption);
+        } else {
+            return res.status(404).json({ message: "Adoption non trouvée" });
+        }
     } catch (error) {
-        console.error("Erreur lors de la création de l'adoption:", error);
-        res.status(500).json({ message: "Erreur lors de la création de l'adoption." });
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+const createAdoption = async (req, res) => {
+    const { message, time_slot, user_id, resident_id } = req.body;
+
+    try {
+        // Appel de la méthode create dans le modèle
+        const newAdoption = await Adoption.create(message, time_slot, user_id, resident_id);
+        return res.status(201).json(newAdoption); // Réponse en cas de succès
+    } catch (error) {
+        return res.status(400).json({ error: error.message }); // Réponse en cas d'erreur
+    }
+};
+
+export const updateAdoptionStatus = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+        const updatedAdoption = await Adoption.updateStatus(id, status);
+        return res.status(200).json(updatedAdoption);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+export const deleteAdoption = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await Adoption.remove(id);
+        return res.status(204).json({ message: "Demande supprimée" }); // 204 No Content en cas de suppression réussie
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
     }
 };
 
