@@ -8,6 +8,9 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const MySQLStore = require("express-mysql-session")(session);
 
+import ROUTER from "./router/index.routes.js";
+
+
 const app = express();
 const PORT = process.env.PORT || process.env.LOCAL_PORT;
 
@@ -53,7 +56,6 @@ app.use(async (req, res, next) => {
 });
 
 // Routes (à ajouter plus tard)
-import ROUTER from "./router/index.routes.js";
 app.use(["/api/v1", "/"], ROUTER);
 
 // Lancer le serveur
