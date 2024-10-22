@@ -1,4 +1,5 @@
 import Resident from "../models/Resident.js";
+import Upload from "./upload.js";
 
 // Récupérer tous les résidents (triés par date d'arrivée)
 const getResidents = async (req, res) => {
@@ -32,11 +33,30 @@ const getResidentById = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const residentData = req.body;  // Assure-toi que le body contient toutes les colonnes nécessaires
+        // Extraire les données du corps de la requête
+        const { name, age, sex, specie, breed_id, status_id } = req.body;
+
+        // Gérer l'image et obtenir le chemin
+        const imagePath = await Upload.handleImageUpload(req);
+
+        // Construire l'objet datas avec les champs appropriés
+        const residentData = {
+            name,
+            age,
+            sex,
+            photo: imagePath,  // Chemin de l'image après upload
+            specie,
+            breed_id,
+            status_id
+        };
+
+        // Créer le résident dans la base de données en passant l'objet residentData
         const [response] = await Resident.create(residentData);
-        res.json({ msg: "Resident created", id: response.insertId });
+
+        // Retourner une réponse de succès avec l'ID du résident créé
+        return res.status(201).json({ msg: "Resident créé avec succès", id: response.insertId });
     } catch (err) {
-        res.status(500).json({ msg: err.message });
+        return res.status(500).json({ msg: err.message });
     }
 };
 

@@ -1,4 +1,5 @@
 import "dotenv/config";
+import fileUpload from 'express-fileupload';
 import express from "express";
 import path from "path";
 import cors from "cors";
@@ -45,6 +46,9 @@ app.use(
     })
 );
 
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 }, // Limite la taille à 50 MB
+}));
 app.use("/img", express.static(path.join(process.cwd(), "public/img")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

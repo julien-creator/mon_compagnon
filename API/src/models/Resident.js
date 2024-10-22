@@ -8,7 +8,7 @@ class Resident {
           FROM resident r
           JOIN resident_breed rb ON r.breed_id = rb.id
           JOIN resident_status rs ON r.status_id = rs.id
-          JOIN resident_detail rd ON r.id = rd.resident_id
+          LEFT JOIN resident_detail rd ON r.id = rd.resident_id
           ORDER BY rd.arrival_date DESC;
         `;
 

@@ -4,6 +4,14 @@ const createDetail = async (req, res) => {
     try {
         const residentDetailData = req.body;
         const residentId = req.params.id;
+
+        // Vérifier si le détail du résident existe déjà
+        const existingDetail = await ResidentDetail.findDetailByResidentId(residentId);
+        if (existingDetail) {
+            return res.status(400).json({ msg: "Resident detail already exists" });
+        }
+
+        // Créer le détail du résident s'il n'existe pas encore
         await ResidentDetail.createDetail(residentId, residentDetailData);
         res.json({ msg: "Resident details added" });
     } catch (err) {

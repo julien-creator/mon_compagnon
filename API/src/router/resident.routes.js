@@ -9,7 +9,7 @@ router.get("/:id", getResidentById);  // sans middleware
 router.post("/create", create); // ! Admin (middleware)
 router.patch("/update/:id", update); // ! Admin (middleware)
 router.delete("/delete/:id", remove); // ! Admin (middleware)
-router.post("/:id/detail", createDetail); // ! Admin (middleware)
-router.patch("/:id/detail", updateDetail); // ! Admin (middleware)
+router.post("/detail/:id", createDetail); // ! Admin (middleware)
+router.patch("/detail/:id", updateDetail); // ! Admin (middleware)
 
 export default router;
