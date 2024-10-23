@@ -1,6 +1,6 @@
 import Contact from "../models/Contact.js";
 
-const submitContactForm = async (req, res) => {
+const createContact = async (req, res) => {
     const { firstname, lastname, email, message } = req.body;
     try {
         const contact = await Contact.create(firstname, lastname, email, message);
@@ -32,9 +32,9 @@ const getById = async (req, res) => {
     }
 };
 
-const update = async (req, res) => {
+const updateContactStatus = async (req, res) => {
     try {
-        const contact = await Contact.update(req.body.status, req.params.id);
+        const contact = await Contact.updateStatus(req.body.status, req.params.id);
         if (!contact) {
             res.status(404).json({ msg: "status not updated !" });
             return;
@@ -45,7 +45,7 @@ const update = async (req, res) => {
     }
 };
 
-const remove = async (req, res) => {
+const removeContact = async (req, res) => {
     try {
         const [response] = await Contact.remove(req.params.id);
         if (!response.affectedRows) {
@@ -58,4 +58,4 @@ const remove = async (req, res) => {
     }
 }
 
-export { submitContactForm, getAllContacts, getById, update, remove };
+export { createContact, getAllContacts, getById, updateContactStatus, removeContact };

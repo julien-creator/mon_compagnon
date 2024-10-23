@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 const SALT = 10;
 
-const create = async (req, res) => {
+const createAccount = async (req, res) => {
     try {
         const { firstname, lastname, email, password, phone, birthdate } = req.body;
         const [[user]] = await Auth.findOneByEmail(email);
@@ -64,8 +64,11 @@ const logout = async (req, res) => {
 };
 
 const check_auth = async (req, res) => {
-    const { user } = req.session;
-    res.json({ isLogged: true, user });
+    if (req.session.user) {
+        res.json({ isLogged: true, user: req.session.user });
+    } else {
+        res.json({ isLogged: false });
+    }
 };
 
-export { create, login, logout, check_auth };
+export { createAccount, login, logout, check_auth };

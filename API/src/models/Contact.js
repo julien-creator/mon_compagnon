@@ -43,7 +43,7 @@ class Contact {
         return null; // Retourne null si aucun contact trouvé
     }
 
-    static async update(status, id) {
+    static async updateStatus(status, id) {
         const UPDATE = `
             UPDATE contact 
             SET status = ? 

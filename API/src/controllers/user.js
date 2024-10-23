@@ -29,7 +29,7 @@ const getUserById = async (req, res) => {
 };
 
 // Supprimer un utilisateur par son id (route réservée à l'admin)
-const deleteUser = async (req, res) => {
+const removeUser = async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -44,4 +44,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-export { getAllUsers, deleteUser, getUserById };
+export { getAllUsers, removeUser, getUserById };

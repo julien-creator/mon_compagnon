@@ -1,11 +1,11 @@
 import { Router } from "express";
 
-import { create, login, logout, check_auth } from "../controllers/auth.js";
+import { createAccount, login, logout, check_auth } from "../controllers/auth.js";
 
 
 const router = Router();
 
-router.post("/register", create);
+router.post("/register", createAccount);
 router.post("/login", login); // Auth (middleware)
 
 router.post("/logout", logout); // Auth (middleware)

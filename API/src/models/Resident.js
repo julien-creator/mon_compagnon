@@ -12,8 +12,7 @@ class Resident {
           ORDER BY rd.arrival_date DESC;
         `;
 
-        const [rows] = await pool.execute(SELECT);
-        return rows;
+        return await pool.query(SELECT);
     }
 
     // Requête pour les détails d'un résident
@@ -26,8 +25,7 @@ class Resident {
         LEFT JOIN resident_detail rd ON r.id = rd.resident_id
         WHERE r.id = ?;
     `;
-        const [rows] = await pool.execute(SELECT_BY_ID, [id]);
-        return rows.length > 0 ? rows[0] : null;
+        return await pool.execute(SELECT_BY_ID, [id]);
     }
 
 
