@@ -13,6 +13,7 @@ class Contact {
             CASE 
                 WHEN status = 0 THEN 'message non lu' 
                 WHEN status = 1 THEN 'message lu' 
+                ELSE 'status inconnu' 
             END AS status
             FROM contact
             `;
@@ -53,7 +54,8 @@ class Contact {
             SELECT id, firstname, lastname, email, message, 
             CASE 
                 WHEN status = 0 THEN 'message non lu' 
-                WHEN status = 1 THEN 'message lu' 
+                WHEN status = 1 THEN 'message lu'
+                ELSE 'status inconnu'  
             END AS status
             FROM contact
             WHERE id = ?;

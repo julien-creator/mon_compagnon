@@ -1,11 +1,9 @@
-import Adoption from "../models/Adoption.js";
 
+import Adoption from "../models/Adoption.js";
 
 const getAdoptions = async (req, res) => {
     try {
-        const adoptions = await Adoption.findAdoption();
-
-        // Retourne les résidents récupérés
+        const [adoptions] = await Adoption.findAll();
         res.status(200).json(adoptions);
     } catch (error) {
         console.error("Erreur dans le contrôleur:", error);
@@ -13,54 +11,79 @@ const getAdoptions = async (req, res) => {
     }
 };
 
-export const getAdoptionById = async (req, res) => {
+const getAdoptionById = async (req, res) => {
     const { id } = req.params;
-
     try {
-        const adoption = await Adoption.findById(id);
-        if (adoption) {
-            return res.status(200).json(adoption);
-        } else {
+        const [adoption] = await Adoption.findById(id);
+        if (!adoption) {
             return res.status(404).json({ message: "Adoption non trouvée" });
         }
+        res.status(200).json(adoption);
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
 const createAdoption = async (req, res) => {
-    const { message, time_slot, user_id, resident_id } = req.body;
-
     try {
-        // Appel de la méthode create dans le modèle
-        const newAdoption = await Adoption.create(message, time_slot, user_id, resident_id);
-        return res.status(201).json(newAdoption); // Réponse en cas de succès
+        //console.log(req.params)
+        const { message, time_slot } = req.body;
+
+        const datas = {
+            message,
+            time_slot,
+            user_id: req.session.user.id,
+            resident_id: parseInt(req.params.id)
+        }
+        console.log(datas);
+        console.log(req.session.user.id);
+        // Vérification des adoptions en cours
+        const [userAdoption] = await Adoption.checkUserAdoption(datas.user_id);
+        if (userAdoption.length > 0) {
+            return res.status(400).json({ msg: "Cet utilisateur a déjà une adoption en cours." });
+        }
+
+        const [residentAdoption] = await Adoption.checkResidentAdoption(datas.resident_id);
+        if (residentAdoption.length > 0) {
+            return res.status(400).json({ msg: "Ce résident est déjà en cours d'adoption." });
+        }
+
+        const [result] = await Adoption.create(datas);
+        res.status(201).json({
+            msg: "Adoption créée avec succès",
+            adoption_id: result.insertId
+        });
     } catch (error) {
-        return res.status(400).json({ error: error.message }); // Réponse en cas d'erreur
+        res.status(500).json({ msg: error.message });
     }
 };
 
-export const updateAdoptionStatus = async (req, res) => {
+const updateAdoptionStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
-
     try {
-        const updatedAdoption = await Adoption.updateStatus(id, status);
-        return res.status(200).json(updatedAdoption);
+        const [updatedAdoption] = await Adoption.updateStatus(id, status);
+        if (!updatedAdoption.affectedRows) {
+            return res.status(404).json({ msg: "Adoption non trouvée ou statut non mis à jour" });
+        }
+        res.status(200).json({ msg: "Statut mis à jour avec succès" });
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
-export const deleteAdoption = async (req, res) => {
+const deleteAdoption = async (req, res) => {
     const { id } = req.params;
-
     try {
-        await Adoption.remove(id);
-        return res.status(204).json({ message: "Demande supprimée" }); // 204 No Content en cas de suppression réussie
+        const [result] = await Adoption.remove(id);
+        if (!result.affectedRows) {
+            res.status(404).json({ message: "Adoption non trouvée" });
+            return;
+        }
+        res.status(201).json({ msg: "Adoption supprimée avec succès" });
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
-export { getAdoptions, createAdoption };
+export { getAdoptions, getAdoptionById, createAdoption, updateAdoptionStatus, deleteAdoption };
