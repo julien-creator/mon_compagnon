@@ -21,17 +21,37 @@ const createDetail = async (req, res) => {
 
 const updateDetail = async (req, res) => {
     try {
-        const residentDetailData = req.body;
         const residentId = req.params.id;
-        const [response] = await ResidentDetail.updateDetail(residentDetailData, residentId);
-        if (!response.affectedRows) {
-            res.status(404).json({ msg: "Resident detail not updated" });
-            return;
+        const newDetailData = req.body;
+
+        // Récupérer les informations actuelles du résident
+        const existingDetail = await ResidentDetail.findDetailByResidentId(residentId);
+
+        if (!existingDetail) {
+            return res.status(404).json({ msg: "Resident detail not found" });
         }
+
+        // Fusionner les nouvelles données avec les anciennes
+        const updatedDetail = {
+            arrival_date: newDetailData.arrival_date || existingDetail.arrival_date,
+            description: newDetailData.description || existingDetail.description,
+            provenance: newDetailData.provenance || existingDetail.provenance,
+            sterilized: newDetailData.sterilized !== undefined ? newDetailData.sterilized : existingDetail.sterilized,
+            categorized: newDetailData.categorized !== undefined ? newDetailData.categorized : existingDetail.categorized,
+            vaccine: newDetailData.vaccine !== undefined ? newDetailData.vaccine : existingDetail.vaccine,
+        };
+
+        // Mettre à jour les détails du résident
+        const [response] = await ResidentDetail.updateDetail(updatedDetail, residentId);
+
+        if (!response.affectedRows) {
+            return res.status(404).json({ msg: "Resident detail not updated" });
+        }
+
         res.json({ msg: "Resident detail updated" });
     } catch (err) {
         res.status(500).json({ msg: err.message });
     }
 };
 
-export { createDetail, updateDetail }
+export { createDetail, updateDetail };
