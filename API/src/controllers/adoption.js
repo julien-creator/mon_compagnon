@@ -26,17 +26,13 @@ const getAdoptionById = async (req, res) => {
 
 const createAdoption = async (req, res) => {
     try {
-        //console.log(req.params)
-        const { message, time_slot } = req.body;
-
         const datas = {
             message,
             time_slot,
             user_id: req.session.user.id,
             resident_id: parseInt(req.params.id)
         }
-        console.log(datas);
-        console.log(req.session.user.id);
+
         // Vérification des adoptions en cours
         const [userAdoption] = await Adoption.checkUserAdoption(datas.user_id);
         if (userAdoption.length > 0) {
