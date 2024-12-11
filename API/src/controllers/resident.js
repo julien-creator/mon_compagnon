@@ -58,7 +58,27 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const residentData = req.body;  // Assure-toi que le body contient toutes les colonnes nécessaires
+        const residentData = req.body; // Récupère les données du corps de la requête
+
+        // Vérifie si une nouvelle image est incluse dans la requête
+        if (req.files && req.files.photo) {
+            // Appelle la fonction d'upload pour gérer la nouvelle image
+            const newImagePath = await Upload.handleImageUpload(req);
+
+            // Ajoute le chemin de la nouvelle image dans les données du résident
+            residentData.photo = newImagePath;
+
+            // Supprime l'ancienne image si elle existe
+            const resident = await Resident.findById(req.params.id); // Assure-toi que cette méthode existe
+            if (resident.photo) {
+                const oldImagePath = path.join(process.cwd(), 'public', resident.photo);
+                if (fs.existsSync(oldImagePath)) {
+                    fs.unlinkSync(oldImagePath);
+                }
+            }
+        }
+
+        // Mets à jour les données dans la base de données
         const [response] = await Resident.update(residentData, req.params.id);
         if (!response.affectedRows) {
             res.status(404).json({ msg: "Resident not updated" });

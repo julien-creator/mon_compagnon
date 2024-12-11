@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 
 class Upload {
-    static async handleImageUpload(req, res) {
+    static async handleImageUpload(req) {
         try {
             // Vérifie si des fichiers sont uploadés
             if (!req.files || Object.keys(req.files).length === 0) {
@@ -29,23 +29,25 @@ class Upload {
             const extension = path.extname(image.name);
             const uniqueName = `${uuidv4()}${extension}`;
 
-            // Chemin pour enregistrer l'image dans /public/img/residents
-            const uploadPath = path.join(process.cwd(), 'public', 'img', 'residents', uniqueName);
+            // Chemin absolu pour enregistrer l'image dans /public/img/residents
+            const uploadDir = path.join(process.cwd(), 'public', 'img', 'residents');
+            const uploadPath = path.join(uploadDir, uniqueName);
 
             // Crée le répertoire s'il n'existe pas
-            const dir = path.join(process.cwd(), 'public', 'img', 'residents');
-            if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true });
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true });
             }
 
             // Déplace le fichier vers le chemin défini
             await image.mv(uploadPath);
 
-            // Retourne le chemin du fichier enregistré
-            return uploadPath;
+            // Retourne le chemin relatif (par rapport au serveur)
+            const relativePath = `/img/residents/${uniqueName}`;
+            return relativePath;
         } catch (error) {
             throw new Error(error.message);
         }
     }
 }
+
 export default Upload;
