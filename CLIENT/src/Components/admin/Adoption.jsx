@@ -16,7 +16,7 @@ function Adoption() {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    credentials: "include", // Envoie les cookies de session automatiquement
+                    credentials: "include",
                 });
 
                 if (!response.ok) {
@@ -40,7 +40,7 @@ function Adoption() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                credentials: "include", // Envoie les cookies de session automatiquement
+                credentials: "include",
                 body: JSON.stringify({ status }),
             });
 
@@ -69,7 +69,7 @@ function Adoption() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                credentials: "include", // Envoie les cookies de session automatiquement
+                credentials: "include",
             });
 
             if (response.ok) {

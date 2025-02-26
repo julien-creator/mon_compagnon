@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
 
 function User() {
-    const [users, setUsers] = useState([]); // Liste des utilisateurs
-    const [selectedUser, setSelectedUser] = useState(null); // Détails d'un utilisateur sélectionné
-    const [error, setError] = useState(""); // Gestion des erreurs
-    const [loading, setLoading] = useState(false); // Indicateur de chargement
+    const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    // Fonction pour récupérer tous les utilisateurs
+
     const fetchUsers = async () => {
         setLoading(true);
         setError("");
         try {
             const response = await fetch("http://localhost:9000/api/v1/user/list", {
-                credentials: "include", // Inclure les cookies pour l'authentification
+                credentials: "include",
             });
             const data = await response.json();
             if (response.ok) {
-                setUsers(data); // Mettre à jour la liste des utilisateurs
+                setUsers(data);
             } else {
                 setError(`Erreur : ${data.msg || "Impossible de récupérer les utilisateurs."}`);
             }
@@ -27,7 +27,7 @@ function User() {
         }
     };
 
-    // Fonction pour récupérer les détails d'un utilisateur
+
     const fetchUserById = async (id) => {
         setLoading(true);
         setError("");
@@ -37,7 +37,7 @@ function User() {
             });
             const data = await response.json();
             if (response.ok) {
-                setSelectedUser(data); // Mettre à jour les détails de l'utilisateur
+                setSelectedUser(data);
             } else {
                 setError(`Erreur : ${data.msg || "Utilisateur non trouvé."}`);
             }
@@ -48,7 +48,7 @@ function User() {
         }
     };
 
-    // Fonction pour supprimer un utilisateur
+
     const deleteUser = async (id) => {
         if (window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
             try {
@@ -59,7 +59,7 @@ function User() {
                 const data = await response.json();
                 if (response.ok) {
                     alert(data.msg);
-                    fetchUsers(); // Rafraîchir la liste après suppression
+                    fetchUsers();
                 } else {
                     setError(`Erreur : ${data.msg}`);
                 }
@@ -69,7 +69,7 @@ function User() {
         }
     };
 
-    // Charger la liste des utilisateurs au montage du composant
+
     useEffect(() => {
         fetchUsers();
     }, []);
@@ -80,7 +80,7 @@ function User() {
             {loading && <p>Chargement...</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
 
-            {/* Liste des utilisateurs */}
+
             {!loading && !error && !selectedUser && (
                 <table>
                     <thead>
@@ -113,7 +113,7 @@ function User() {
                 </table>
             )}
 
-            {/* Détails d'un utilisateur */}
+
             {selectedUser && (
                 <div>
                     <h2>Détails de l'utilisateur</h2>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 const AdoptionForm = () => {
-    const { id } = useParams(); // id du résident à adopter
+    const { id } = useParams();
     const [formData, setFormData] = useState({ message: "", time_slot: "" });
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -33,14 +33,14 @@ const AdoptionForm = () => {
                     message: formData.message,
                     time_slot: formData.time_slot,
                 }),
-                credentials: "include", // Pour inclure les cookies de session si nécessaire
+                credentials: "include",
             });
 
             if (response.ok) {
                 const data = await response.json();
-                setSuccessMessage(data.msg); // Afficher le message de succès
-                setFormData({ message: "", time_slot: "" }); // Réinitialiser le formulaire
-                setError(""); // Réinitialiser l'erreur
+                setSuccessMessage(data.msg);
+                setFormData({ message: "", time_slot: "" });
+                setError("");
             } else {
                 const errorData = await response.json();
                 setError(errorData.msg || "Une erreur est survenue.");

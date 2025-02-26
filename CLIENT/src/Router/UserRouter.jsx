@@ -23,8 +23,6 @@ function UserRouter() {
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="resident" element={<Resident />} />
-
-                {/* Route pour les détails du résident */}
                 <Route path="resident/:id" element={<ResidentDetails />} />
                 <Route path="/adoption/:id" element={<ProtectedRoute element={AdoptionForm} />} />
 

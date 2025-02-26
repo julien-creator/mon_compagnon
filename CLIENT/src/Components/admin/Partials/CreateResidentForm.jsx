@@ -11,21 +11,20 @@ function CreateResidentForm() {
         photo: null,
     });
 
-    // Pour les détails, on définit vaccine comme booléen (false par défaut)
     const [detailData, setDetailData] = useState({
         arrival_date: "",
         description: "",
         provenance: "",
         sterilized: null,
         categorized: null,
-        vaccine: "no", // Utilisé comme booléen
+        vaccine: "no",
     });
 
     const [breeds, setBreeds] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // Récupération des races
+
     const fetchBreeds = async () => {
         setLoading(true);
         setError("");
@@ -55,7 +54,7 @@ function CreateResidentForm() {
         setFormData({ ...formData, photo: e.target.files[0] });
     };
 
-    // Pour les champs de détail, on utilise handleDetailChange
+
     const handleDetailChange = (e) => {
         const { name, value, type, checked } = e.target;
         setDetailData({
@@ -79,9 +78,9 @@ function CreateResidentForm() {
 
             if (!response.ok) throw new Error("Erreur lors de la création du résident.");
 
-            const resident = await response.json(); // Récupère l'ID du résident créé
+            const resident = await response.json();
 
-            // Ajout des détails du résident
+
             const detailResponse = await fetch(
                 `http://localhost:9000/api/v1/resident/detail/${resident.id}`,
                 {

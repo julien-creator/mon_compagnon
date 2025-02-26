@@ -6,15 +6,15 @@ import { faCircleArrowRight, faCircleArrowLeft } from "@fortawesome/free-solid-s
 const Slider = ({ residents }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const itemsPerPage = 1; // Affiche un seul résident à la fois
+    const itemsPerPage = 1;
     const maxIndex = Math.ceil(residents.length / itemsPerPage) - 1;
 
-    // Fonction pour aller à la page suivante
+
     const nextPage = () => {
         setCurrentIndex((prevIndex) => (prevIndex < maxIndex ? prevIndex + 1 : 0));
     };
 
-    // Fonction pour aller à la page précédente
+
     const prevPage = () => {
         setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : maxIndex));
     };

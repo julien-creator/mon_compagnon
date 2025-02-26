@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useCloseMenu from "../../Hooks/useCloseMenu";
-import Slider from "../user/Partials/Slider"; // Importer le slider
+import Slider from "../user/Partials/Slider";
 import FormContact from "../user/Partials/FormContact";
 import About from "./Partials/About";
 
@@ -13,7 +13,7 @@ const Home = () => {
         const fetchResidents = async () => {
             const response = await fetch("http://localhost:9000/api/v1/resident/all");
             const data = await response.json();
-            setResidents(data.slice(0, 5)); // Récupérer les 5 derniers résidents
+            setResidents(data.slice(0, 5));
         };
 
         fetchResidents();

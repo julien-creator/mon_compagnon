@@ -51,7 +51,7 @@ function Resident() {
             <h2>Gestion des Résidents</h2>
             {msg && <p style={{ color: "green" }}>{msg}</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
-            {/* Lien vers la page de création d'un nouveau résident */}
+
             <Link to="/resident/create">
                 <button>Créer un Nouveau Résident</button>
             </Link>

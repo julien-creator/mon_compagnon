@@ -25,7 +25,7 @@ function ResidentDetails() {
             }
             const data = await response.json();
             setResident(data);
-            setFormData(data); // Initialisation du formulaire avec les données récupérées
+            setFormData(data);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -42,7 +42,7 @@ function ResidentDetails() {
         setUpdateError("");
         setSuccessMessage("");
         if (!isEditing) {
-            setFormData(resident); // Réinitialiser le formulaire avec les données actuelles
+            setFormData(resident);
         }
     };
 
@@ -73,7 +73,7 @@ function ResidentDetails() {
             await response.json();
             setSuccessMessage("Mise à jour réussie !");
             setIsEditing(false);
-            fetchResident(); // Recharger les informations à jour
+            fetchResident();
         } catch (err) {
             setUpdateError("Erreur lors de la mise à jour du résident.");
         }

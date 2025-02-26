@@ -40,8 +40,8 @@ const ResidentDetails = () => {
         if (!isLogged) {
             setAdoptionMessage("Vous devez être connecté pour adopter ce résident.");
         } else {
-            setAdoptionMessage(""); // Nettoyer le message si déjà connecté
-            // Logique d'adoption si nécessaire
+            setAdoptionMessage("");
+
             setShowAdoptionForm(true);
         }
     };
@@ -80,7 +80,7 @@ const ResidentDetails = () => {
                 </p>
                 <p>Vacciné : {resident.vaccine ? "Oui" : "Non"}</p>
 
-                {/* Bouton d'adoption */}
+
                 {!showAdoptionForm && (
                     <button onClick={handleAdoptionClick}>Adopter ce résident</button>
                 )}

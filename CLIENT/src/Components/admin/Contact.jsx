@@ -1,21 +1,21 @@
 import { useState, useEffect } from "react";
 
 function Contact() {
-    const [contacts, setContacts] = useState([]); // Liste des contacts
-    const [error, setError] = useState(""); // Gestion des erreurs
-    const [loading, setLoading] = useState(false); // Indicateur de chargement
+    const [contacts, setContacts] = useState([]);
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    // Fonction pour récupérer tous les messages
+
     const fetchContacts = async () => {
         setLoading(true);
         setError("");
         try {
             const response = await fetch("http://localhost:9000/api/v1/contact/all", {
-                credentials: "include", // Inclure les cookies de session pour l'authentification
+                credentials: "include",
             });
             const data = await response.json();
             if (response.ok) {
-                setContacts(data); // Mettre à jour la liste des contacts
+                setContacts(data);
             } else {
                 setError(`Erreur : ${data.message || "Impossible de récupérer les messages."}`);
             }
@@ -26,7 +26,7 @@ function Contact() {
         }
     };
 
-    // Fonction pour mettre à jour le statut d'un message
+
     const updateContactStatus = async (id, status) => {
         try {
             const response = await fetch(`http://localhost:9000/api/v1/contact/update/${id}`, {
@@ -38,7 +38,7 @@ function Contact() {
             const result = await response.json();
             if (response.ok) {
                 alert("Statut mis à jour avec succès !");
-                fetchContacts(); // Rafraîchir la liste après mise à jour
+                fetchContacts();
             } else {
                 alert(`Erreur : ${result.msg}`);
             }
@@ -47,7 +47,7 @@ function Contact() {
         }
     };
 
-    // Fonction pour supprimer un message
+
     const deleteContact = async (id) => {
         try {
             const response = await fetch(`http://localhost:9000/api/v1/contact/delete/${id}`, {
@@ -56,7 +56,7 @@ function Contact() {
             });
             if (response.ok) {
                 alert("Message supprimé avec succès !");
-                fetchContacts(); // Rafraîchir la liste après suppression
+                fetchContacts();
             } else {
                 const result = await response.json();
                 alert(`Erreur : ${result.msg}`);
@@ -67,7 +67,7 @@ function Contact() {
     };
 
     useEffect(() => {
-        fetchContacts(); // Charger les contacts au montage du composant
+        fetchContacts();
     }, []);
 
     return (

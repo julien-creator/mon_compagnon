@@ -16,7 +16,7 @@ const FormContact = () => {
     const handleContact = async (e) => {
         e.preventDefault();
 
-        // Validation des champs
+
         if (!firstname.trim() || !lastname.trim() || !email.trim() || !message.trim()) {
             dispatch(setMsg("Tous les champs sont obligatoires."));
             return;

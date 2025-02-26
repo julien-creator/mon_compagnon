@@ -42,7 +42,7 @@ function Nav() {
         };
     }, []);
 
-    // Fonction de déconnexion
+
     const onClickLogout = () => {
         async function fetchLogout() {
             try {
@@ -53,9 +53,9 @@ function Nav() {
 
                 if (response.ok) {
                     const data = await response.json();
-                    dispatch(logout(data.isLogged)); // Met à jour Redux pour `user`
-                    dispatch(toggleMenu()); // Ferme le menu (si ouvert)
-                    navigate("/"); // Redirige vers la page d'accueil
+                    dispatch(logout(data.isLogged));
+                    dispatch(toggleMenu());
+                    navigate("/");
                 } else {
                     console.error("Erreur lors de la déconnexion");
                 }
