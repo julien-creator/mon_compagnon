@@ -25,6 +25,7 @@ const getAdoptionById = async (req, res) => {
 };
 
 const createAdoption = async (req, res) => {
+    const { message, time_slot } = req.body;
     try {
         const datas = {
             message,
@@ -49,6 +50,7 @@ const createAdoption = async (req, res) => {
             msg: "Adoption créée avec succès",
             adoption_id: result.insertId
         });
+
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }

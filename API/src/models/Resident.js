@@ -4,7 +4,7 @@ class Resident {
     // Méthode pour récupérer les résidents triés par date d'arrivée
     static async findResidents() {
         const SELECT = `
-          SELECT r.id, r.name, r.age, r.sex, r.photo, rb.name AS breed_name, rs.name AS status_name, rd.description, rd.arrival_date
+          SELECT r.id, r.name, r.age, r.sex, r.photo, r.specie, rb.name AS breed_name, rs.name AS status_name, rd.description, rd.arrival_date
           FROM resident r
           JOIN resident_breed rb ON r.breed_id = rb.id
           JOIN resident_status rs ON r.status_id = rs.id
